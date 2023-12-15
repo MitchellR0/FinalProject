@@ -21,8 +21,8 @@ public class PostBattleScreen extends javax.swing.JFrame {
     
     //get the winner and both teams
     private int i = BattleScreen.getWinner();
-    private ArrayList<newPokemon> team = TeamSelectGUI.getFinalTeam();
-    private ArrayList<newPokemon> championTeam = TeamSelectGUI.getChampionTeam();
+    private ArrayList<Pokemon> team = TeamSelectGUI.getFinalTeam();
+    private ArrayList<Pokemon> championTeam = TeamSelectGUI.getChampionTeam();
     
     /**
      * Creates new form PostBattleScreen

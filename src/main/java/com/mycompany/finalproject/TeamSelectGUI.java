@@ -27,24 +27,24 @@ import javax.swing.JOptionPane;
 public class TeamSelectGUI extends javax.swing.JFrame {
     
     //creates a static team to access elsewhere
-    private static ArrayList<newPokemon> finalTeam;
+    private static ArrayList<Pokemon> finalTeam;
     //create the enemy champion team
-    private static ArrayList<newPokemon> championTeam = new ArrayList<>();
+    private static ArrayList<Pokemon> championTeam = new ArrayList<>();
     //make this private and add a getter function
     private JFileChooser fileChooser = new JFileChooser();
     private ArrayList<File> savedTeams = new ArrayList<>();
     
     //Small Getter Functions
-    public static ArrayList<newPokemon> getFinalTeam(){
+    public static ArrayList<Pokemon> getFinalTeam(){
         return finalTeam;
     }
-    public static ArrayList<newPokemon> getChampionTeam(){
+    public static ArrayList<Pokemon> getChampionTeam(){
         return championTeam;
     }
     
     //class for list models
     private class CustomListModel extends AbstractListModel<String>{
-        protected ArrayList<newPokemon> list = new ArrayList<>();
+        protected ArrayList<Pokemon> list = new ArrayList<>();
 
         public CustomListModel(){
             super();
@@ -60,11 +60,11 @@ public class TeamSelectGUI extends javax.swing.JFrame {
             return list.get(index).getName();
         }
         
-        public newPokemon getPokemonAt(int index) {
+        public Pokemon getPokemonAt(int index) {
             return list.get(index);
         }
         
-        public void addElement(newPokemon p){
+        public void addElement(Pokemon p){
             list.add(p);
             int t = list.size()-1;
             fireContentsChanged(this, t, t);
@@ -88,7 +88,7 @@ public class TeamSelectGUI extends javax.swing.JFrame {
             return list.get(index).getFullInfo();
         }
         
-        public ArrayList<newPokemon> getPlayerTeam(){
+        public ArrayList<Pokemon> getPlayerTeam(){
             return list;
         }
     }  
@@ -109,7 +109,7 @@ public class TeamSelectGUI extends javax.swing.JFrame {
         //for loop to retrieve 151 pokemon
         int pokemonIndex;
         for (pokemonIndex = 1; pokemonIndex < 152; pokemonIndex ++){
-           newPokemon tmp = urlHelper.getPokemon(pokemonIndex);
+           Pokemon tmp = urlHelper.getPokemon(pokemonIndex);
            options.addElement(tmp); 
            tmp.initialLoadStats();
            //add champion pokemon
@@ -312,7 +312,7 @@ public class TeamSelectGUI extends javax.swing.JFrame {
                 team.addElement(options.getPokemonAt(selection));
                 //add image to label
                 JLabel[] lblArray = new JLabel[]{imgLabel1, imgLabel2, imgLabel3, imgLabel4, imgLabel5, imgLabel6};
-                newPokemon tmpP = team.getPokemonAt(team.getSize() - 1);
+                Pokemon tmpP = team.getPokemonAt(team.getSize() - 1);
                 try {
                     URL imgURL = new URL(tmpP.getSprites().getImg());
                     ImageIcon finalImage = new ImageIcon(imgURL);
@@ -342,7 +342,7 @@ public class TeamSelectGUI extends javax.swing.JFrame {
             //fix the order of images
             for (int i = selection; i < team.getSize(); i++) {
                 try {
-                    newPokemon tmpP = team.getPokemonAt(i);
+                    Pokemon tmpP = team.getPokemonAt(i);
                     URL imgURL = new URL(tmpP.getSprites().getImg());
                     ImageIcon finalImage = new ImageIcon(imgURL);
                     lblArray[i].setIcon(finalImage);
@@ -425,7 +425,7 @@ public class TeamSelectGUI extends javax.swing.JFrame {
             try {
                 fr = new FileReader(file);
                 Gson gson = new Gson();
-                newPokemon[] team = gson.fromJson(fr, newPokemon[].class);
+                Pokemon[] team = gson.fromJson(fr, Pokemon[].class);
                 for (int i = teamListModel.getSize() - 1; i >= 0; i--){
                     teamListModel.removeElement(i);
                     lblArray[i].setIcon(null);

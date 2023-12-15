@@ -25,7 +25,7 @@ public class URLHelper {
         gson = new Gson();
     }
     
-    public newPokemon getPokemon(int i){
+    public Pokemon getPokemon(int i){
     // code from: https://docs.oracle.com/javase/tutorial/networking/urls/readingWriting.html
         
         URL pokemon;
@@ -41,7 +41,7 @@ public class URLHelper {
                 System.out.println(inputLine);
                 sb.append(inputLine);
             }
-            newPokemon p = gson.fromJson(sb.toString(), newPokemon.class);
+            Pokemon p = gson.fromJson(sb.toString(), Pokemon.class);
             in.close();
             return p;
         } catch (MalformedURLException ex) {

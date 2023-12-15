@@ -8,7 +8,7 @@ package com.mycompany.finalproject;
  *
  * @author mitch
  */
-public class newPokemon {
+public class Pokemon {
     private final String name;
     private final Type[] types;
     private Stats[] stats;
@@ -19,7 +19,7 @@ public class newPokemon {
     private boolean isAlive = true;
     
     
-    public newPokemon(String name, int id, Type[] types, Stats[] stats){
+    public Pokemon(String name, int id, Type[] types, Stats[] stats){
         this.name = name;
         this.types = types;
         this.stats = stats;

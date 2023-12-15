@@ -19,11 +19,11 @@ import javax.swing.JOptionPane;
  */
 public class BattleScreen extends javax.swing.JFrame {
     //Bring in players team from team select
-    private ArrayList<newPokemon> team = TeamSelectGUI.getFinalTeam();
-    private newPokemon currentPokemon;
+    private ArrayList<Pokemon> team = TeamSelectGUI.getFinalTeam();
+    private Pokemon currentPokemon;
     //Enemy Chamption Team
-    private ArrayList<newPokemon> championTeam = TeamSelectGUI.getChampionTeam();
-    private newPokemon enemyCurrentPokemon;
+    private ArrayList<Pokemon> championTeam = TeamSelectGUI.getChampionTeam();
+    private Pokemon enemyCurrentPokemon;
     //Turn bools
     private boolean playerTurn = true;
     
@@ -45,12 +45,12 @@ public class BattleScreen extends javax.swing.JFrame {
         initComponents();
         btnHeal.setText("Heal: " + heals + "/3");
         //Set the first players pokemon up in the GUI
-        newPokemon first = team.get(0);
+        Pokemon first = team.get(0);
         currentPokemon = first;
         updatePlayerGUI(first);
 
         //Set the enemys first pokemon in the GUI
-        newPokemon enemyFirst = championTeam.get(0);
+        Pokemon enemyFirst = championTeam.get(0);
         enemyCurrentPokemon = enemyFirst;
         updateEnemyGUI(enemyFirst);
     }
@@ -278,7 +278,7 @@ public class BattleScreen extends javax.swing.JFrame {
             playerTurn = false;
             //Make arraylist of options that are only names and corresponding list for pokemon
             ArrayList<String> optionsAL = new ArrayList<>();
-            ArrayList<newPokemon> optionsNP = new ArrayList<>();
+            ArrayList<Pokemon> optionsNP = new ArrayList<>();
             for (int i = 0; i < team.size(); i++){
                 if (team.get(i).getIsAlive() == true){
                     optionsAL.add(team.get(i).getName());
@@ -299,7 +299,7 @@ public class BattleScreen extends javax.swing.JFrame {
                         return;
                     }
                     //update the current pokemon
-                    newPokemon switchedPokemon = optionsNP.get(choice);
+                    Pokemon switchedPokemon = optionsNP.get(choice);
                     currentPokemon = switchedPokemon;
                     updatePlayerGUI(switchedPokemon); 
                     loop = false;
@@ -317,7 +317,7 @@ public class BattleScreen extends javax.swing.JFrame {
             //update Dialog
             jtaDialog.append("\n" + enemyCurrentPokemon.getName() + " fainted.");
             //make an array list for the rest of the pokemon that the enemy has alive
-            ArrayList<newPokemon> enemyListAlive = new ArrayList<>();
+            ArrayList<Pokemon> enemyListAlive = new ArrayList<>();
             for (int i = 0; i < championTeam.size(); i++){
                 if (championTeam.get(i).getIsAlive() == true){
                     enemyListAlive.add(championTeam.get(i));
@@ -327,7 +327,7 @@ public class BattleScreen extends javax.swing.JFrame {
             if (!enemyListAlive.isEmpty()) {
                 //get an index for the pokemon to switch to
                 int switchTo = random.nextInt(enemyListAlive.size());
-                newPokemon tmp = enemyListAlive.get(switchTo);
+                Pokemon tmp = enemyListAlive.get(switchTo);
                 //update GUI with new enemy current pokemon
                 enemyCurrentPokemon = tmp;
                 updateEnemyGUI(tmp);
@@ -359,7 +359,7 @@ public class BattleScreen extends javax.swing.JFrame {
             jtaDialog.append("\n" + enemyCurrentPokemon.getName() +" Healed");
         } else { //If choice is 3 then switch
             //make an ArrayList for the enemies that are alive
-            ArrayList<newPokemon> enemyListAlive = new ArrayList<>();
+            ArrayList<Pokemon> enemyListAlive = new ArrayList<>();
             for (int i = 0; i < championTeam.size(); i++){
                 if (championTeam.get(i).getIsAlive() == true){
                     enemyListAlive.add(championTeam.get(i));
@@ -367,7 +367,7 @@ public class BattleScreen extends javax.swing.JFrame {
             }
             //Switch to a random number in that list
             int switchTo = random.nextInt(enemyListAlive.size());
-            newPokemon tmp = enemyListAlive.get(switchTo);
+            Pokemon tmp = enemyListAlive.get(switchTo);
             //update GUI with new enemy current pokemon
             enemyCurrentPokemon = tmp;
             updateEnemyGUI(tmp);
@@ -377,7 +377,7 @@ public class BattleScreen extends javax.swing.JFrame {
         //check to see if player pokemon is dead, if so force user to switch unless there is none left, in which the enemy wins
         if  (currentPokemon.getIsAlive() == false){
             ArrayList<String> optionsAL = new ArrayList<>();
-            ArrayList<newPokemon> optionsNP = new ArrayList<>();
+            ArrayList<Pokemon> optionsNP = new ArrayList<>();
             for (int i = 0; i < team.size(); i++){
                 if (team.get(i).getIsAlive() == true){
                     optionsAL.add(team.get(i).getName());
@@ -393,7 +393,7 @@ public class BattleScreen extends javax.swing.JFrame {
                 //make sure its a valid choice
                 if (playerChoice != -1){
                     //update the current pokemon
-                    newPokemon switchedPokemon = optionsNP.get(playerChoice);
+                    Pokemon switchedPokemon = optionsNP.get(playerChoice);
                     currentPokemon = switchedPokemon;
                     updatePlayerGUI(switchedPokemon);  
                 }
@@ -408,7 +408,7 @@ public class BattleScreen extends javax.swing.JFrame {
         playerTurn = true;
     }
     
-    public void updateEnemyGUI(newPokemon p){
+    public void updateEnemyGUI(Pokemon p){
         //updates the enemy side of the GUI
         try {
             URL enemyImgURL = new URL(p.getSprites().getImg());
@@ -424,7 +424,7 @@ public class BattleScreen extends javax.swing.JFrame {
         }
 
     }
-    public void updatePlayerGUI(newPokemon p){
+    public void updatePlayerGUI(Pokemon p){
         //updates the player side of the GUI
         try {
             URL imgURL = new URL(p.getSprites().getImg());
@@ -450,17 +450,22 @@ public class BattleScreen extends javax.swing.JFrame {
         }
     }
     
-    public void attackSequence(newPokemon attacker, newPokemon defender, int moveNum){
+    public void attackSequence(Pokemon attacker, Pokemon defender, int moveNum){
         //this function takes an attacker, defender, and move num (either 1 or 2)
         //and computes the attack as well as the dialog for it
         double multiplier;
         //compute attack damage
         if (defender.getTypes().length == 1){ //enemy is one type
-            multiplier = typeHelper.getTypeMatchup(attacker.getTypes()[moveNum].type.name, defender.getTypes()[0].type.name);
+            //gets the multiplier of attackers type against enemies type
+            multiplier = typeHelper.getTypeMatchup(attacker.getTypes()[moveNum].type.name, 
+                    defender.getTypes()[0].type.name);
             defender.attacked(attacker.getAttackPower() * multiplier);
         } else { //enemy is double typed
-            double multiplier1 = typeHelper.getTypeMatchup(attacker.getTypes()[moveNum].type.name, defender.getTypes()[0].type.name);
-            double multiplier2 = typeHelper.getTypeMatchup(attacker.getTypes()[moveNum].type.name, defender.getTypes()[1].type.name);
+            //gets both multipliers of attackers type against both defenders types
+            double multiplier1 = typeHelper.getTypeMatchup(attacker.getTypes()[moveNum].type.name, 
+                    defender.getTypes()[0].type.name);
+            double multiplier2 = typeHelper.getTypeMatchup(attacker.getTypes()[moveNum].type.name, 
+                    defender.getTypes()[1].type.name);
             //final multiplier
             multiplier = multiplier1 * multiplier2;
             defender.attacked(attacker.getAttackPower() * multiplier);
@@ -468,13 +473,17 @@ public class BattleScreen extends javax.swing.JFrame {
 
         //dialog options based on the multiplier
         if ((multiplier == 2.0) || (multiplier == 4.0)){
-            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + attacker.getAttackPower() * multiplier + " damage. It was super effective!");
+            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + 
+                    attacker.getAttackPower() * multiplier + " damage. It was super effective!");
         } else if (multiplier == 0.5){
-            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + attacker.getAttackPower() * multiplier + " damage. It was not very effective.");
+            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + 
+                    attacker.getAttackPower() * multiplier + " damage. It was not very effective.");
         } else if (multiplier == 0.0){
-            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + attacker.getAttackPower() * multiplier + " damage. It had no effect.");
+            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + 
+                    attacker.getAttackPower() * multiplier + " damage. It had no effect.");
         } else {
-            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + attacker.getAttackPower() * multiplier + " damage.");
+            jtaDialog.append("\n" + attacker.getName() + " attacked " + defender.getName() + " for " + 
+                    attacker.getAttackPower() * multiplier + " damage.");
         }
     }
     
