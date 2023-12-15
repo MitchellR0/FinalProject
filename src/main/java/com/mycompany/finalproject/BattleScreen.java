@@ -89,6 +89,7 @@ public class BattleScreen extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btnAttack1.setText("Attack 1");
         btnAttack1.addActionListener(new java.awt.event.ActionListener() {

@@ -19,6 +19,7 @@ public class StartScreen extends javax.swing.JFrame {
      */
     public StartScreen() {
         initComponents();
+        
         //Set up logo
         ImageIcon logoIcon = new ImageIcon("logo.png");
         Image logo = logoIcon.getImage();
@@ -40,6 +41,7 @@ public class StartScreen extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btnStart.setText("Start");
         btnStart.addActionListener(new java.awt.event.ActionListener() {

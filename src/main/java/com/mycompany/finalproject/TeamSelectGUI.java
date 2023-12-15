@@ -162,6 +162,7 @@ public class TeamSelectGUI extends javax.swing.JFrame {
         jLabel3.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jlstPlayerTeam.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         jlstPlayerTeam.setModel(new javax.swing.AbstractListModel<String>() {
